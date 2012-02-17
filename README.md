@@ -1,7 +1,7 @@
-
-Yack
-![Railsonfire Status for flomotlik/yack](https://railsonfire-dev.heroku.com/projects/48d5cb30-3ba5-012f-d8f0-123139181d2d/status)
+Yack ![Railsonfire Status for flomotlik/yack](https://railsonfire-dev.heroku.com/projects/48d5cb30-3ba5-012f-d8f0-123139181d2d/status)
 ===
+
+
 
 Yack is a library to create simple callbacks for loading your Yaml files. It is especially useful when loading config files. Instead of pulling the values out of the config file you simply add callbacks and when the attributes exist in the file a code block is run.
 
