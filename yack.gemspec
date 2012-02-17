@@ -9,7 +9,8 @@ Gem::Specification.new do |s|
 
   s.files = [
     'LICENSE',
-    'README.md'
+    'README.md',
+    'lib/yack.rb'
   ]
 
   s.authors = ["Florian Motlik"]
