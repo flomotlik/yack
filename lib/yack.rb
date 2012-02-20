@@ -1,46 +1,45 @@
-require 'yaml'
-
 module Yack
   class Callback
     def initialize
-      @groups = {}
+      @callbacks = {}
     end
 
-    def process_yaml yaml
-      yaml = YAML::load(yaml)
-      yaml.each{|key, value|
-        _call_back yaml, @groups
+    def process hash
+      @callbacks.keys.each{|key|
+        _call_back @callbacks[key], hash[key]
       }
     end
 
     def method_missing m, *args, &block
-      block_given? ? @groups[m] = block : Handler.new(m, @groups)
+      block_given? ? @callbacks[m] = block : Handler.new(m, @callbacks)
     end
 
     private
-    def _call_back key, value
-      return if key.nil? or value.nil?
-      case(key)
+    def _call_back callback, hash
+      return if callback.nil? or hash.nil?
+      case(callback)
         when Hash
-          _call_back key[key.keys.first], value[key.keys.first]
-        else
-          value.call(key)
+          callback.keys.each do |key|
+            _call_back callback[key], hash[key]
+          end
+        when Proc
+          callback.call(hash)
       end
     end
   end
 
   class Handler
-    def initialize method, groups
-      groups[method] ||= {}
-      @groups = groups[method]
+    def initialize method, callbacks
+      callbacks[method] ||= {}
+      @callbacks = callbacks[method]
     end
 
     def method_missing m, *args, &block
       if block_given?
-        @groups[m] = block
+        @callbacks[m] = block
       else
-        @groups[m] ||= {}
-        @groups = @groups[m]
+        @callbacks[m] ||= {}
+        @callbacks = @callbacks[m]
         return self
       end
     end
